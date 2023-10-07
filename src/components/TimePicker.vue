@@ -1,6 +1,13 @@
 <template>
   <div class="time-picker">
-    <input class="text-input" type="text" v-model="str" @input="event => parseValue(event.target.value)">
+    <!-- <input class="text-input" type="text" v-model="str" @input="event => parseValue(event.target.value)"> -->
+    <div class="display">
+      <input type="number" v-model="time.hours">
+      <input type="number" v-model="time.minutes">
+      <input type="number" v-model="time.seconds">
+      <button @click="isAm = !isAm">{{ ampm }}</button>
+    </div>
+
     <div class="content-container">
       <div class="content">
 
@@ -147,8 +154,15 @@ function parseValue(val) {
   @apply w-96;
 }
 
-.text-input {
-  @apply border-2 w-full p-2 rounded-md outline-none caret-sky-500 focus:border-sky-500 focus:outline-sky-200 focus:outline-2 focus:outline-offset-0 text-lg font-medium text-[#666]
+/* .text-input {
+  @apply border-2 w-full p-2 rounded-md outline-none caret-[#666] focus:border-sky-500 focus:outline-sky-200 focus:outline-2 focus:outline-offset-0 text-lg font-medium text-[#666]
+} */
+.display {
+  @apply flex border-2 w-full p-2 rounded-md text-lg font-medium text-[#666] select-none
+}
+
+.display input {
+  @apply border-none outline-none w-6;
 }
 
 .content-container {
