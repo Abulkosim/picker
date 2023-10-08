@@ -2,10 +2,11 @@
   <div class="time-picker">
     <!-- <input class="text-input" type="text" v-model="str" @input="event => parseValue(event.target.value)"> -->
     <div class="display">
-      <input type="number" v-model="time.hours">
-      <input type="number" v-model="time.minutes">
-      <input type="number" v-model="time.seconds">
-      <button @click="isAm = !isAm">{{ ampm }}</button>
+      <input type="number" v-model="time.hours" min="0" max="23" v-if="props.format != '12'" @input="resize">
+      <input type="number" v-model="time.hours" min="0" max="11" v-if="props.format == '12'" @input="resize">
+      <input type="number" v-model="time.minutes" min="0" max="59" @input="resize">
+      <input type="number" v-model="time.seconds" min="0" max="59" @input="resize" v-if="props.seconds">
+      <button @click="isAm = !isAm" v-if="props.format == '12'">{{ ampm }}</button>
     </div>
 
     <div class="content-container">
@@ -44,11 +45,11 @@
           </div>
         </div>
 
-        <div class="item">
+        <div class="item" v-if="props.seconds">
           <span>:</span>
         </div>
 
-        <div class="item">
+        <div class="item" v-if="props.seconds">
           <div class="icon-div">
             <PhCaretUp :size="20" @click="changeSeconds(1)" />
           </div>
@@ -78,10 +79,11 @@
 
 <script setup>
 import { PhCaretUp, PhCaretDown } from "@phosphor-icons/vue";
-import { ref, computed, onMounted } from 'vue';
+import { ref, computed, onMounted, reactive } from 'vue';
 
 const props = defineProps({
-  format: String
+  format: String,
+  seconds: Boolean
 })
 
 const time = ref({
@@ -127,25 +129,44 @@ let ampm = computed(() => {
   return isAm.value ? 'am' : 'pm'
 })
 
-const str = computed(() => {
-  return `${('0' + time.value.hours).slice(-2)}:${('0' + time.value.minutes).slice(-2)}:${('0' + time.value.seconds).slice(-2)}${props.format == '12' ? ' ' + ampm.value : ''}`
-})
+// const str = computed(() => {
+//   return `${('0' + time.value.hours).slice(-2)}:${('0' + time.value.minutes).slice(-2)}:${('0' + time.value.seconds).slice(-2)}${props.format == '12' ? ' ' + ampm.value : ''}`
+// })
 
-function parseValue(val) {
-  let arr = val.split(' ')[0].split(':')
-  if (arr.length == 3) {
-    time.value.hours = arr[0]
-    time.value.minutes = arr[1]
-    time.value.seconds = arr[2]
-  }
+// const hours = computed(() => {
+//   return `${('0' + time.value.hours).slice(-2)}`
+// })
 
-  if (val.split(' ')[1].toLowerCase() == 'am') {
-    isAm.value = true
-  } else if (val.split(' ')[1].toLowerCase() == 'pm') {
-    isAm.value = false
+// const minutes = computed(() => {
+//   return `${('0' + time.value.minutes).slice(-2)}`
+// })
+
+// const seconds = computed(() => {
+//   return `${('0' + time.value.seconds).slice(-2)}`
+// })
+
+// function parseValue(val) {
+//   let arr = val.split(' ')[0].split(':')
+//   if (arr.length == 3) {
+//     time.value.hours = arr[0]
+//     time.value.minutes = arr[1]
+//     time.value.seconds = arr[2]
+//   }
+
+//   if (val.split(' ')[1].toLowerCase() == 'am') {
+//     isAm.value = true
+//   } else if (val.split(' ')[1].toLowerCase() == 'pm') {
+//     isAm.value = false
+//   }
+// }
+
+
+function resize(event) {
+  event.target.style.width = event.target.value.length + "ch"
+  if (event.target.value.length > 0) {
+    event.target.style.margin = '0 2px'
   }
 }
-
 </script>
 
 <style scoped>
@@ -153,9 +174,10 @@ function parseValue(val) {
   @apply w-96;
 }
 
-/* .text-input {
+.text-input {
   @apply border-2 w-full p-2 rounded-md outline-none caret-[#666] focus:border-sky-500 focus:outline-sky-200 focus:outline-2 focus:outline-offset-0 text-lg font-medium text-[#666]
-} */
+}
+
 .display {
   @apply flex border-2 w-full p-2 rounded-md text-lg font-medium text-[#666] select-none
 }
