@@ -16,21 +16,21 @@
         <div class="content">
           <div class="item" v-if="props.format != '12'">
             <div class="icon-div">
-              <PhCaretUp :size="20" @click="changeHours(1)" />
+              <PhCaretUp :size="18" @click="changeHours(1)" />
             </div>
             <input type="number" v-model="time.hours" min="0" max="23">
             <div class="icon-div">
-              <PhCaretDown :size="20" @click="changeHours(-1)" />
+              <PhCaretDown :size="18" @click="changeHours(-1)" />
             </div>
           </div>
 
           <div class="item" v-if="props.format == '12'">
             <div class="icon-div">
-              <PhCaretUp :size="20" @click="changeHours12(1)" />
+              <PhCaretUp :size="18" @click="changeHours12(1)" />
             </div>
             <input type="number" v-model="time.hours" min="0" max="11">
             <div class="icon-div">
-              <PhCaretDown :size="20" @click="changeHours12(-1)" />
+              <PhCaretDown :size="18" @click="changeHours12(-1)" />
             </div>
           </div>
 
@@ -40,11 +40,11 @@
 
           <div class="item">
             <div class="icon-div">
-              <PhCaretUp :size="20" @click="changeMinutes(1)" />
+              <PhCaretUp :size="18" @click="changeMinutes(1)" />
             </div>
             <input type="number" v-model="time.minutes" min="0" max="59">
             <div class="icon-div">
-              <PhCaretDown :size="20" @click="changeMinutes(-1)" />
+              <PhCaretDown :size="18" @click="changeMinutes(-1)" />
             </div>
           </div>
 
@@ -54,11 +54,11 @@
 
           <div class="item" v-if="props.seconds">
             <div class="icon-div">
-              <PhCaretUp :size="20" @click="changeSeconds(1)" />
+              <PhCaretUp :size="18" @click="changeSeconds(1)" />
             </div>
             <input type="number" v-model="time.seconds" min="0" max="59">
             <div class="icon-div">
-              <PhCaretDown :size="20" @click="changeSeconds(-1)" />
+              <PhCaretDown :size="18" @click="changeSeconds(-1)" />
             </div>
           </div>
 
@@ -68,11 +68,11 @@
 
           <div class="item" v-if="props.format == '12'">
             <div class="icon-div">
-              <PhCaretUp :size="20" @click="isAm = !isAm" />
+              <PhCaretUp :size="18" @click="isAm = !isAm" />
             </div>
             <button @click="isAm = !isAm">{{ ampm }}</button>
             <div class="icon-div">
-              <PhCaretDown :size="20" @click="isAm = !isAm" />
+              <PhCaretDown :size="18" @click="isAm = !isAm" />
             </div>
           </div>
         </div>
