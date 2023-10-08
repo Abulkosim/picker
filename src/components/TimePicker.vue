@@ -10,7 +10,6 @@
 
     <div class="content-container">
       <div class="content">
-
         <div class="item" v-if="props.format != '12'">
           <div class="icon-div">
             <PhCaretUp :size="20" @click="changeHours(1)" />
