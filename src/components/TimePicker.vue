@@ -1,6 +1,5 @@
 <template>
   <div class="time-picker" @click="open = true" @click.stop>
-    <!-- <input class="text-input" type="text" v-model="str" @input="event => parseValue(event.target.value)"> -->
     <div class="display">
       <input type="number" v-model="time.hours" min="0" max="23" v-if="props.format != '12'" @input="resize">
       <input type="number" v-model="time.hours" min="0" max="11" v-if="props.format == '12'" @input="resize">
@@ -90,6 +89,7 @@ const props = defineProps({
   seconds: Boolean
 })
 
+const open = ref(false)
 const time = ref({
   hours: ("0" + 0).slice(-2),
   minutes: ("0" + 0).slice(-2),
@@ -132,49 +132,6 @@ let isAm = ref(false)
 let ampm = computed(() => {
   return isAm.value ? 'am' : 'pm'
 })
-
-// const str = computed(() => {
-//   return `${('0' + time.value.hours).slice(-2)}:${('0' + time.value.minutes).slice(-2)}:${('0' + time.value.seconds).slice(-2)}${props.format == '12' ? ' ' + ampm.value : ''}`
-// })
-
-// const hours = computed(() => {
-//   return `${('0' + time.value.hours).slice(-2)}`
-// })
-
-// const minutes = computed(() => {
-//   return `${('0' + time.value.minutes).slice(-2)}`
-// })
-
-// const seconds = computed(() => {
-//   return `${('0' + time.value.seconds).slice(-2)}`
-// })
-
-// function parseValue(val) {
-//   let arr = val.split(' ')[0].split(':')
-//   if (arr.length == 3) {
-//     time.value.hours = arr[0]
-//     time.value.minutes = arr[1]
-//     time.value.seconds = arr[2]
-//   }
-
-//   if (val.split(' ')[1].toLowerCase() == 'am') {
-//     isAm.value = true
-//   } else if (val.split(' ')[1].toLowerCase() == 'pm') {
-//     isAm.value = false
-//   }
-// }
-
-
-// function resize(event) {
-//   if (event.target.value.length == 0) {
-//     event.target.style.width = '1ch'
-//   } else {
-//     // event.target.style.width = event.target.value.length + "ch"
-//     console.log(event.target.style.width)
-//   }
-// }
-
-const open = ref(false)
 
 window.addEventListener('click', () => {
   open.value = !open.value
