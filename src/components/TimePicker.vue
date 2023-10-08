@@ -134,8 +134,10 @@ let ampm = computed(() => {
 })
 
 window.addEventListener('click', () => {
-  open.value = !open.value
+  open.value = false
 })
+
+
 </script>
 
 <style scoped>
