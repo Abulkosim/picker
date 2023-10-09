@@ -34,7 +34,7 @@
           </div>
 
           <div class="item">
-            <span>:</span>
+            <span>:</span> 
           </div>
 
           <div class="item">
