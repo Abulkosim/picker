@@ -139,7 +139,6 @@ window.addEventListener('click', () => {
 
 
 </script>
-
 <style scoped>
 .time-picker {
   @apply w-96;
@@ -204,4 +203,5 @@ button {
 .v-leave-to {
   opacity: 0;
 }
+
 </style>
