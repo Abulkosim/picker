@@ -30,7 +30,7 @@
             <input type="number" v-model="time.hours" min="0" max="11">
             <div class="icon-div">
               <PhCaretDown :size="18" @click="changeHours12(-1)" />
-            </div>
+            </div>  
           </div>
 
           <div class="item">
