@@ -34,7 +34,7 @@
           </div>
 
           <div class="item">
-            <span>:</span> 
+            <span>:</span>
           </div>
 
           <div class="item">
@@ -86,7 +86,8 @@ import { ref, computed } from 'vue';
 
 const props = defineProps({
   format: String,
-  seconds: Boolean
+  seconds: Boolean,
+  min: String
 })
 
 const open = ref(false)
@@ -132,6 +133,12 @@ let isAm = ref(false)
 let ampm = computed(() => {
   return isAm.value ? 'am' : 'pm'
 })
+
+if (props.min) {
+  time.value.hours = ("0" + Math.floor((props.min % 86400) / 3600)).slice(-2);
+  time.value.minutes = ("0" + Math.floor((props.min % 86400) % 3600 / 60)).slice(-2);
+  time.value.seconds = ("0" + Math.floor((props.min % 86400) % 3600 % 60)).slice(-2);
+}
 
 window.addEventListener('click', () => {
   open.value = false
@@ -203,5 +210,4 @@ button {
 .v-leave-to {
   opacity: 0;
 }
-
 </style>
