@@ -87,7 +87,8 @@ import { ref, computed } from 'vue';
 const props = defineProps({
   format: String,
   seconds: Boolean,
-  min: String
+  min: String,
+  max: String
 })
 
 const open = ref(false)
@@ -96,38 +97,6 @@ const time = ref({
   minutes: ("0" + 0).slice(-2),
   seconds: ("0" + 0).slice(-2)
 })
-
-function changeHours(val) {
-  if (+time.value.hours == 0 && val < 0) {
-    return " "
-  } else {
-    time.value.hours = ("0" + ((+time.value.hours + val) % 24)).slice(-2)
-  }
-}
-
-function changeHours12(val) {
-  if (+time.value.hours == 0 && val < 0) {
-    return " "
-  } else {
-    time.value.hours = ("0" + ((+time.value.hours + val) % 12)).slice(-2)
-  }
-}
-
-function changeMinutes(val) {
-  if (+time.value.minutes == 0 && val < 0) {
-    return " "
-  } else {
-    time.value.minutes = ("0" + ((+time.value.minutes + val) % 60)).slice(-2)
-  }
-}
-
-function changeSeconds(val) {
-  if (+time.value.seconds == 0 && val < 0) {
-    return " "
-  } else {
-    time.value.seconds = ("0" + ((+time.value.seconds + val) % 60)).slice(-2)
-  }
-}
 
 let isAm = ref(false)
 let ampm = computed(() => {
@@ -140,10 +109,54 @@ if (props.min) {
   time.value.seconds = ("0" + Math.floor((props.min % 86400) % 3600 % 60)).slice(-2);
 }
 
+
 window.addEventListener('click', () => {
   open.value = false
 })
 
+function convert() {
+  return +time.value.hours * 3600 + +time.value.minutes * 60 + +time.value.seconds
+}
+
+function changeHours(val) {
+  if (convert() >= props.min && convert() <= props.max) {
+    if (+time.value.hours == 0 && val < 0) {
+      return " "
+    } else {
+      time.value.hours = ("0" + ((+time.value.hours + val) % 12)).slice(-2)
+    }
+  }
+}
+
+function changeHours12(val) {
+  if (convert() >= props.min && convert() <= props.max) {
+    if (+time.value.hours == 0 && val < 0) {
+      return " "
+    } else {
+      time.value.hours = ("0" + ((+time.value.hours + val) % 12)).slice(-2)
+    }
+  }
+}
+
+function changeMinutes(val) {
+  if (convert() >= props.min && convert() <= props.max) {
+    if (+time.value.minutes == 0 && val < 0) {
+      return " "
+    } else {
+      time.value.minutes = ("0" + ((+time.value.minutes + val) % 60)).slice(-2)
+    }
+  }
+}
+
+function changeSeconds(val) {
+  if (convert() >= props.min && convert() <= props.max) {
+    if (+time.value.seconds == 0 && val < 0) {
+      return " "
+    } else {
+      time.value.seconds = ("0" + ((+time.value.seconds + val) % 60)).slice(-2)
+    }
+  }
+}
 
 </script>
 <style scoped>
