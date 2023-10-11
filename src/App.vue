@@ -1,5 +1,5 @@
 <template>
-  <TimePicker seconds min="1215" max="12000" class="m-5" />
+  <TimePicker format="12" seconds min="1215" max="19000" class="m-5" />
 </template>
 
 <script setup lang="ts">

@@ -82,7 +82,7 @@
 
 <script setup>
 import { PhCaretUp, PhCaretDown } from "@phosphor-icons/vue";
-import { ref, computed } from 'vue';
+import { ref, computed, reactive } from 'vue';
 
 const props = defineProps({
   format: String,
@@ -157,6 +157,21 @@ function changeSeconds(val) {
     }
   }
 }
+
+const obj = ref({
+  hh: +("0" + time.value.hours).slice(-2),
+  mm: +("0" + time.value.minutes).slice(-2),
+})
+
+if (props.seconds) {
+  obj.value['ss'] = +("0" + time.value.seconds).slice(-2)
+}
+
+if (props.format == '12') {
+  obj.value['ampm'] = `${ampm.value}`
+}
+
+const result = ref(JSON.stringify(obj.value))
 
 </script>
 <style scoped>
