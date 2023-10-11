@@ -77,6 +77,7 @@
         </div>
       </div>
     </Transition>
+
   </div>
 </template>
 
@@ -158,20 +159,20 @@ function changeSeconds(val) {
   }
 }
 
-const obj = ref({
+const obj = reactive({
   hh: +("0" + time.value.hours).slice(-2),
   mm: +("0" + time.value.minutes).slice(-2),
 })
 
 if (props.seconds) {
-  obj.value['ss'] = +("0" + time.value.seconds).slice(-2)
+  obj['ss'] = +("0" + time.value.seconds).slice(-2)
 }
 
 if (props.format == '12') {
-  obj.value['ampm'] = `${ampm.value}`
+  obj['ampm'] = `${ampm.value}`
 }
 
-const result = ref(JSON.stringify(obj.value))
+const result = ref(JSON.stringify(obj))
 
 </script>
 <style scoped>
