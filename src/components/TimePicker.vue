@@ -1,5 +1,5 @@
 <template>
-  <div class="time-picker" @click="open = true" @click.stop>
+  <div class="time-picker" @click="open = true; model()" @click.stop>
     <div class="display">
       <input type="number" v-model="time.hours" min="0" max="23" v-if="props.format != '12'" @input="resize">
       <input type="number" v-model="time.hours" min="0" max="11" v-if="props.format == '12'" @input="resize">
@@ -83,13 +83,25 @@
 
 <script setup>
 import { PhCaretUp, PhCaretDown } from "@phosphor-icons/vue";
-import { ref, computed, reactive } from 'vue';
+import { ref, computed } from 'vue';
+
+const emit = defineEmits(['result'])
+
+const model = () => {
+  emit('result', obj)
+}
 
 const props = defineProps({
   format: String,
   seconds: Boolean,
-  min: String,
-  max: String
+  min: {
+    type: String,
+    default: "0"
+  },
+  max: {
+    type: String,
+    default: "86400"
+  },
 })
 
 const open = ref(false)
@@ -110,7 +122,6 @@ if (props.min) {
   time.value.seconds = ("0" + Math.floor((props.min % 86400) % 3600 % 60)).slice(-2);
 }
 
-
 window.addEventListener('click', () => {
   open.value = false
 })
@@ -120,17 +131,29 @@ function convert() {
 }
 
 function changeHours(val) {
-  if (convert() >= props.min && convert() <= props.max) {
+  if (val < 0 && convert() > props.min) {
     if (+time.value.hours == 0 && val < 0) {
       return " "
     } else {
-      time.value.hours = ("0" + ((+time.value.hours + val) % 12)).slice(-2)
+      time.value.hours = ("0" + ((+time.value.hours + val) % 24)).slice(-2)
+    }
+  } else if (val > 0 && convert() < props.max) {
+    if (+time.value.hours == 0 && val < 0) {
+      return " "
+    } else {
+      time.value.hours = ("0" + ((+time.value.hours + val) % 24)).slice(-2)
     }
   }
 }
 
 function changeHours12(val) {
-  if (convert() >= props.min && convert() <= props.max) {
+  if (val < 0 && convert() > props.min) {
+    if (+time.value.hours == 0 && val < 0) {
+      return " "
+    } else {
+      time.value.hours = ("0" + ((+time.value.hours + val) % 12)).slice(-2)
+    }
+  } else if (val > 0 && convert() < props.max) {
     if (+time.value.hours == 0 && val < 0) {
       return " "
     } else {
@@ -140,7 +163,13 @@ function changeHours12(val) {
 }
 
 function changeMinutes(val) {
-  if (convert() >= props.min && convert() <= props.max) {
+  if (val < 0 && convert() > props.min) {
+    if (+time.value.minutes == 0 && val < 0) {
+      return " "
+    } else {
+      time.value.minutes = ("0" + ((+time.value.minutes + val) % 60)).slice(-2)
+    }
+  } else if (val > 0 && convert() < props.max) {
     if (+time.value.minutes == 0 && val < 0) {
       return " "
     } else {
@@ -150,29 +179,37 @@ function changeMinutes(val) {
 }
 
 function changeSeconds(val) {
-  if (convert() >= props.min && convert() <= props.max) {
+  if (val < 0 && convert() > props.min) {
     if (+time.value.seconds == 0 && val < 0) {
       return " "
     } else {
-      time.value.seconds = ("0" + ((+time.value.seconds + val) % 60)).slice(-2)
+      time.value.seconds = ("0" + ((+time.value.seconds + val) % 24)).slice(-2)
+    }
+  } else if (val > 0 && convert() < props.max) {
+    if (+time.value.seconds == 0 && val < 0) {
+      return " "
+    } else {
+      time.value.seconds = ("0" + ((+time.value.seconds + val) % 24)).slice(-2)
     }
   }
 }
 
-const obj = reactive({
-  hh: +("0" + time.value.hours).slice(-2),
-  mm: +("0" + time.value.minutes).slice(-2),
+const obj = computed(() => {
+  const temp = {
+    hh: +("0" + time.value.hours).slice(-2),
+    mm: +("0" + time.value.minutes).slice(-2),
+  }
+
+  if (props.seconds) {
+    temp.ss = +("0" + time.value.seconds).slice(-2)
+  }
+
+  if (props.format == '12') {
+    temp.ampm = `${ampm.value}`
+  }
+
+  return temp
 })
-
-if (props.seconds) {
-  obj['ss'] = +("0" + time.value.seconds).slice(-2)
-}
-
-if (props.format == '12') {
-  obj['ampm'] = `${ampm.value}`
-}
-
-const result = ref(JSON.stringify(obj))
 
 </script>
 <style scoped>
